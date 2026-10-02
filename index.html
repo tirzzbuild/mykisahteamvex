@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Album Kenangan Firdan</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      color: #e8e8e8;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    /* Screens */
+    .screen {
+      display: none;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 0.8s ease;
+    }
+    
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    /* Intro */
+    .intro-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #f9d423, #ff4e50);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+      text-shadow: 0 0 30px rgba(249, 212, 35, 0.3);
+    }
+    
+    .intro-subtitle {
+      font-size: 1.1rem;
+      color: #a0a0c0;
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+    
+    .intro-video-wrapper {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      border: 2px solid rgba(249, 212, 35, 0.3);
+      position: relative;
+    }
+    
+    .intro-video-wrapper video {
+      width: 100%;
+      display: block;
+      background: #000;
+    }
+    
+    .btn {
+      padding: 14px 40px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: 0.5px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #f9d423, #ff4e50);
+      color: #1a1a2e;
+      box-shadow: 0 8px 25px rgba(249, 212, 35, 0.4);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(249, 212, 35, 0.5);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: #e8e8e8;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.6);
+    }
+    
+    .btn-yes {
+      background: linear-gradient(135deg, #00b09b, #96c93d);
+      color: white;
+      box-shadow: 0 8px 25px rgba(0, 176, 155, 0.4);
+    }
+    
+    .btn-yes:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(0, 176, 155, 0.5);
+    }
+    
+    .btn-no {
+      background: linear-gradient(135deg, #eb3349, #f45c43);
+      color: white;
+      box-shadow: 0 8px 25px rgba(235, 51, 73, 0.4);
+    }
+    
+    .btn-no:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(235, 51, 73, 0.5);
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    /* Question */
+    .question-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      line-height: 1.4;
+      max-width: 600px;
+      color: #fff;
+    }
+    
+    .question-hint {
+      font-size: 0.95rem;
+      color: #a0a0c0;
+      margin-top: -10px;
+    }
+    
+    /* Album / Chapters */
+    .chapter-header {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #f9d423, #ff4e50);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .chapter-desc {
+      color: #a0a0c0;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+    
+    .media-card {
+      width: 100%;
+      max-width: 650px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 20px;
+    }
+    
+    .media-card img,
+    .media-card video {
+      width: 100%;
+      display: block;
+      max-height: 450px;
+      object-fit: contain;
+      background: #000;
+    }
+    
+    .media-caption {
+      padding: 16px 20px;
+      font-size: 0.95rem;
+      color: #c0c0d0;
+      background: rgba(0,0,0,0.3);
+    }
+    
+    .progress {
+      font-size: 0.9rem;
+      color: #a0a0c0;
+      margin-bottom: 10px;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    /* End screen */
+    .end-message {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+    
+    .end-sub {
+      color: #a0a0c0;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+    
+    /* Decorative */
+    .album-icon {
+      font-size: 4rem;
+      margin-bottom: 10px;
+      animation: pulse 2s infinite;
+    }
+    
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #f9d423;
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: sparkle 3s infinite;
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+    
+    /* Responsive */
+    @media (max-width: 600px) {
+      .intro-title { font-size: 2rem; }
+      .question-text { font-size: 1.5rem; }
+      .chapter-header { font-size: 1.7rem; }
+      .btn { padding: 12px 28px; font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- SCREEN 0: Intro -->
+    <div id="screen-intro" class="screen active">
+      <div class="album-icon">📖</div>
+      <h1 class="intro-title">Album Kenangan</h1>
+      <p class="intro-subtitle">Sebuah kenangan yang tersimpan...</p>
+      <div class="intro-video-wrapper">
+        <video id="intro-video" src="VID-20261002-WA0072.mp4" autoplay muted loop playsinline></video>
+      </div>
+      <button class="btn btn-primary" onclick="goTo('question1')">Buka Album</button>
+    </div>
+    
+    <!-- SCREEN 1: Question 1 -->
+    <div id="screen-question1" class="screen">
+      <p class="question-text">Apakah anda mau melihat kenangan ini?</p>
+      <p class="question-hint">Pilih dengan hati...</p>
+      <div class="btn-group">
+        <button class="btn btn-yes" onclick="goTo('question2')">Ya</button>
+        <button class="btn btn-no" onclick="goTo('no')">Tidak</button>
+      </div>
+    </div>
+    
+    <!-- SCREEN No -->
+    <div id="screen-no" class="screen">
+      <div class="album-icon">😔</div>
+      <p class="question-text">Baiklah...</p>
+      <p class="end-sub">Mungkin lain waktu. Kenangan ini akan tetap menunggu.</p>
+      <button class="btn btn-secondary" onclick="goTo('intro')">Kembali</button>
+    </div>
+    
+    <!-- SCREEN 2: Question 2 -->
+    <div id="screen-question2" class="screen">
+      <p class="question-text">Apakah anda tau siapakah Firdan itu?</p>
+      <p class="question-hint">Jawab sejujurnya ya...</p>
+      <div class="btn-group">
+        <button class="btn btn-yes" onclick="answerFirdan(true)">Ya, aku tahu</button>
+        <button class="btn btn-no" onclick="answerFirdan(false)">Tidak tahu</button>
+      </div>
+    </div>
+    
+    <!-- SCREEN After answer -->
+    <div id="screen-after" class="screen">
+      <p class="question-text" id="after-text"></p>
+      <button class="btn btn-primary" onclick="startAlbum()">Lihat Kenangan</button>
+    </div>
+    
+    <!-- SCREEN Album / Chapters -->
+    <div id="screen-album" class="screen">
+      <h2 class="chapter-header" id="chapter-title">Bab 1</h2>
+      <p class="chapter-desc" id="chapter-desc">Kenangan di Tepi Pantai</p>
+      <p class="progress" id="progress-text">1 / 3</p>
+      
+      <div class="media-card" id="media-container">
+        <!-- Media will be injected here -->
+      </div>
+      
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" id="btn-prev" onclick="prevMedia()" style="display:none;">← Sebelumnya</button>
+        <button class="btn btn-primary" id="btn-next" onclick="nextMedia()">Selanjutnya →</button>
+      </div>
+    </div>
+    
+    <!-- SCREEN End -->
+    <div id="screen-end" class="screen">
+      <div class="album-icon">💛</div>
+      <p class="end-message">Terima kasih telah melihat</p>
+      <p class="end-sub">Kenangan tentang Firdan ini akan selalu tersimpan di hati. Semoga hari-harimu selalu indah.</p>
+      <button class="btn btn-primary" onclick="goTo('intro')">Ulangi dari Awal</button>
+    </div>
+    
+  </div>
+
+  <script>
+    // Media data - Bab 1: Pantai, Bab 2: Perjalanan & Momen
+    const chapters = [
+      {
+        title: "Bab 1",
+        desc: "Kenangan di Tepi Pantai",
+        items: [
+          {
+            type: "video",
+            src: "VID-20261002-WA0072.mp4",
+            caption: "Suara ombak dan kerang-kerang di pantai... \"Enger, enger.\""
+          },
+          {
+            type: "image",
+            src: "IMG-20261002-WA0074.jpg",
+            caption: "Tawa bersama di atas bebatuan pantai. Momen yang tak terlupakan."
+          },
+          {
+            type: "image",
+            src: "IMG-20261002-WA0073.jpg",
+            caption: "Melihat lebih dekat... apa yang mereka temukan di sana?"
+          }
+        ]
+      },
+      {
+        title: "Bab 2",
+        desc: "Perjalanan & Momen Kecil",
+        items: [
+          {
+            type: "video",
+            src: "VID-20261002-WA0071.mp4",
+            caption: "Ekspresi iseng yang khas... \"Hey!\""
+          },
+          {
+            type: "video",
+            src: "VID-20261002-WA0070.mp4",
+            caption: "Menyusuri jalan desa, angin di wajah, dan tawa di belakang."
+          },
+          {
+            type: "video",
+            src: "VID-20261002-WA0069.mp4",
+            caption: "Jalan setapak menuju kenangan baru. Terus maju."
+          }
+        ]
+      }
+    ];
+    
+    let currentChapter = 0;
+    let currentItem = 0;
+    
+    function goTo(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById('screen-' + screenId);
+      if (target) {
+        target.classList.add('active');
+        // Pause any playing videos when leaving
+        document.querySelectorAll('video').forEach(v => {
+          if (!v.closest('.screen.active')) v.pause();
+        });
+      }
+    }
+    
+    function answerFirdan(knows) {
+      const text = document.getElementById('after-text');
+      if (knows) {
+        text.innerHTML = "Bagus sekali... mari kita buka kenangannya bersama.";
+      } else {
+        text.innerHTML = "Tidak apa-apa. Lewat kenangan ini, kamu akan mengenalinya lebih dekat.";
+      }
+      goTo('after');
+    }
+    
+    function startAlbum() {
+      currentChapter = 0;
+      currentItem = 0;
+      showMedia();
+      goTo('album');
+    }
+    
+    function showMedia() {
+      const chapter = chapters[currentChapter];
+      const item = chapter.items[currentItem];
+      
+      document.getElementById('chapter-title').textContent = chapter.title;
+      document.getElementById('chapter-desc').textContent = chapter.desc;
+      document.getElementById('progress-text').textContent = 
+        `${currentItem + 1} / ${chapter.items.length}`;
+      
+      const container = document.getElementById('media-container');
+      container.innerHTML = '';
+      
+      if (item.type === 'video') {
+        const video = document.createElement('video');
+        video.src = item.src;
+        video.controls = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        container.appendChild(video);
+      } else {
+        const img = document.createElement('img');
+        img.src = item.src;
+        img.alt = item.caption;
+        container.appendChild(img);
+      }
+      
+      const caption = document.createElement('div');
+      caption.className = 'media-caption';
+      caption.textContent = item.caption;
+      container.appendChild(caption);
+      
+      // Buttons
+      const btnPrev = document.getElementById('btn-prev');
+      const btnNext = document.getElementById('btn-next');
+      
+      btnPrev.style.display = (currentItem > 0 || currentChapter > 0) ? 'inline-block' : 'none';
+      
+      const isLast = currentChapter === chapters.length - 1 && 
+                     currentItem === chapter.items.length - 1;
+      
+      if (isLast) {
+        btnNext.textContent = 'Selesai';
+      } else if (currentItem === chapter.items.length - 1) {
+        btnNext.textContent = 'Bab Berikutnya →';
+      } else {
+        btnNext.textContent = 'Selanjutnya →';
+      }
+    }
+    
+    function nextMedia() {
+      const chapter = chapters[currentChapter];
+      
+      if (currentItem < chapter.items.length - 1) {
+        currentItem++;
+        showMedia();
+      } else if (currentChapter < chapters.length - 1) {
+        currentChapter++;
+        currentItem = 0;
+        showMedia();
+      } else {
+        goTo('end');
+      }
+    }
+    
+    function prevMedia() {
+      if (currentItem > 0) {
+        currentItem--;
+        showMedia();
+      } else if (currentChapter > 0) {
+        currentChapter--;
+        currentItem = chapters[currentChapter].items.length - 1;
+        showMedia();
+      }
+    }
+    
+    // Start intro video muted (browsers require muted for autoplay)
+    document.addEventListener('DOMContentLoaded', () => {
+      const v = document.getElementById('intro-video');
+      if (v) {
+        v.muted = true;
+        v.play().catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>
